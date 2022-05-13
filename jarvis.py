@@ -7,16 +7,9 @@ import pywhatkit
 import wikipedia
 import random
 import os
+import json
 
-# Configuración
-wikipedia.set_lang('es')
-engine = pyttsx3.init()
-voices = engine.getProperty('voices')
-volumen = engine.getProperty('volume')
-
-engine.setProperty('voice', voices[2].id)
-engine.setProperty('rate', 175)
-nombre = "jarvis"
+# Métodos
 
 def talk(texto : str):
     """
@@ -25,8 +18,29 @@ def talk(texto : str):
     engine.say(texto)
     engine.runAndWait()
 
+def eliminarNotasWikipedia(texto : str):
+    sinNotas = ""
+    corchete = False
 
-def eliminarTildes(texto: str):
+    for i in range(len(texto)):
+        if texto[i] == '[':
+            corchete = True
+        elif texto[i] == ']':
+            corchete = False
+
+        if not corchete:
+            sinNotas = sinNotas + texto[i]
+
+    sinNotas = sinNotas.replace(']', '')
+    return sinNotas
+
+def config():
+    f = open('config.json')
+    data = json.load(f)
+    f.close()
+    return data
+
+def eliminarTildes(texto : str):
     return texto.replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u")
 
 def escucha():
@@ -41,7 +55,7 @@ def escucha():
 
         try:
             rec = listener.recognize_google(audio, language='es-ES').lower()
-            rec = rec.replace('yarbiss', 'jarvis')
+            rec = rec.replace('yarbiss', 'jarvis').replace('yarbis', 'jarvis')
 
             if nombre in rec:
                 rec = eliminarTildes(rec.replace(nombre, "")).strip()
@@ -51,6 +65,11 @@ def escucha():
             pass
     
     return rec, estado
+
+def cambiarNombre(nombre : str, data : json):
+    with open('config.json', 'w') as f:
+        data['lord'] = nombre
+        json.dump(data, f)
 
 def run():
         valores = escucha()
@@ -85,15 +104,29 @@ def run():
                 # Busca en Google o en Wikipedia
                 elif 'busca' in rec:
                     if 'en google' in rec:
-                        order = rec.replace('busca en google', '')
+                        order = rec.replace('en google', '').replace('busca', '')
                         resultado = pywhatkit.search(order)
                         talk('Buscando ' + order + " en Google")
                     elif 'en wikipedia' in rec:
-                        order = rec.replace('busca en wikipedia', '')
+                        order = rec.replace('en wikipedia', '').replace('busca', '')
                         resultado = wikipedia.summary(order, 2)
-                        talk(resultado)
+
+                        mensaje = eliminarNotasWikipedia(resultado)
+
+                        talk(mensaje)
                     else:
                         talk('Necesito que me digas dónde buscar')
+
+                # Cambiar nombre de saludo
+                elif 'llamame' in rec:
+                    nombre = rec.replace('llamame', '').lstrip()
+                    cambiarNombre(nombre.capitalize(), data)
+                    talk('Vale, a partir de ahora te llamaré ' + nombre.capitalize())
+
+                #Te dice el nombre registrado en la configuración
+                elif 'cual es mi nombre' in rec:
+                    nombre = data['lord']
+                    talk("Tu nombre es " + nombre)
 
                 #Abre YouTube, la calculadora, el explorador de ficheros
                 elif 'abre' in rec:
@@ -118,13 +151,19 @@ def run():
                     talk('Iniciando el control remoto')
                     pywhatkit.start_server()
 
+                #Lanza una moneda
+                elif 'lanza una moneda' in rec:
+                    resultado = random.choice(["cara", "cruz"])
+                    talk("Y el resultado es... " + resultado)
+
                 # Apaga a Jarvis
                 elif 'descansa' in rec:
                     talk('Chao chao')
                     exit()
-
+    
+    # OPCIONES QUE AFECTAN AL ESTADO DEL ORDENADOR 
                 # Cierra la sesión
-                elif 'cierrra sesion' in rec:
+                elif 'cierra sesion' in rec or 'cierra la sesion' in rec:
                     talk('Hasta luego')
                     os.system("shutdown -l")
 
@@ -144,6 +183,19 @@ def run():
                 pass
 
 
-talk("Hola, soy Jarvis y estoy a su servicio")
+# Configuración
+wikipedia.set_lang('es')
+engine = pyttsx3.init()
+voices = engine.getProperty('voices')
+volumen = engine.getProperty('volume')
+
+engine.setProperty('voice', voices[2].id)
+engine.setProperty('rate', 175)
+data = config()
+nombre = "jarvis"
+
+
+
+talk("Hola "+ data["lord"] +", soy Jarvis y estoy a tu servicio")
 while True:
     run()

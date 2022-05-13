@@ -11,3 +11,6 @@ Jarvis es un asistente de voz creado con Python que dispone de los siguientes co
   - Cierra sesión => Cierra la sesión
   - Reinicia el ordenador =>  Reinicia el ordenador
   - Apaga el ordenador => Apaga el ordenador.
+  - Cuál es mi nombre => Te dice el nombre con el que te llamará
+  - Llámame => Te permite cambiar el nombre al que le digas
+  - Lanza una moneda => Elige entre cara y cruz y dice el mensaje
