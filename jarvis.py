@@ -10,12 +10,14 @@ import os
 import json
 from clima import *
 
+
 # Métodos
 
 def talk(texto : str):
     """
     Dice el mensaje pasado como parámetro
     """
+
     engine.say(texto)
     engine.runAndWait()
 
@@ -69,13 +71,15 @@ def escucha():
 
 def cambiarNombre(nombre : str, data : json):
     with open('config.json', 'w') as f:
-        data['lord'] = nombre
+        data['master'] = nombre
         json.dump(data, f)
 
-def obtenerCiudad(texto: str):
-    split1 = texto.split('en ')
-    split2 = split1[1].split(' de ')
-    return split2[0]
+def obtenerCiudad(texto: str, cuando : str):
+    ciudad = texto.replace('dime el clima de ', '').replace('dime el clima en ', '').replace('dime el clima de ' , '')
+    ciudad = texto.replace('dime el tiempo de ', '').replace('dime el tiempo en ', '').replace('dime el tiempo de ' , '')
+    ciudad = ciudad.replace(' de ', '').replace(' en ', '')
+    ciudad = ciudad.replace(cuando, '')
+    return ciudad.title()
 
 
 def run():
@@ -133,7 +137,7 @@ def run():
 
                 #Te dice el nombre registrado en la configuración
                 elif 'cual es mi nombre' in rec:
-                    nombre = data['lord']
+                    nombre = data['master']
                     talk("Tu nombre es " + nombre)
 
                 #Abre YouTube, la calculadora, el explorador de ficheros
@@ -160,18 +164,24 @@ def run():
                     pywhatkit.start_server()
                 
                 # El clima de hoy, mañana o pasado
-                elif 'clima' or 'tiempo' in rec:
-                    ciudad = obtenerCiudad(rec).title()
-                    
+                elif 'clima' in rec or 'tiempo' in rec:
+       
                     if "hoy" in rec:
+                        ciudad = obtenerCiudad(rec, 'hoy')
                         talk('Este es el clima de hoy en ' + ciudad + ':')
                         talk(obtenerClima(ciudad, 'hoy'))
-                    elif "mañana" in rec:
-                        talk('Este es el clima de mañana en ' + ciudad + ':')
-                        talk(obtenerClima(ciudad, 'mañana'))
+
                     elif "pasado mañana" in rec:
+                        ciudad = obtenerCiudad(rec, 'pasado mañana')
                         talk('Este es el clima de pasado mañana en ' + ciudad + ':')
                         talk(obtenerClima(ciudad, "pasado mañana"))
+
+                    elif "mañana" in rec:
+                        ciudad = obtenerCiudad(rec, 'mañana')
+                        talk('Este es el clima de mañana en ' + ciudad + ':')
+                        talk(obtenerClima(ciudad, 'mañana'))
+
+
                     else:
                         talk('Lo siento, sólo tengo los datos de hoy, mañana y pasado.')
 
@@ -179,6 +189,16 @@ def run():
                 elif 'lanza una moneda' in rec:
                     resultado = random.choice(["cara", "cruz"])
                     talk("Y el resultado es... " + resultado)
+                
+                # Dice una frase de la lista
+                elif 'como estas' in rec:
+                    frases = [
+                        '¡Estoy bien!',
+                        'Pasando el rato',
+                        'A mis cosas',
+                        'Echando el día'
+                    ]
+                    talk(random.choice(frases))
 
                 # Apaga a Jarvis
                 elif 'descansa' in rec:
@@ -214,12 +234,12 @@ voices = engine.getProperty('voices')
 volumen = engine.getProperty('volume')
 
 engine.setProperty('voice', voices[2].id)
-engine.setProperty('rate', 175)
+engine.setProperty('rate', 160)
 data = config()
 nombre = "jarvis"
 
 
 
-talk("Hola "+ data["lord"] +", soy Jarvis y estoy a tu servicio")
+talk("Hola "+ data["master"] +", soy Jarvis.")
 while True:
     run()

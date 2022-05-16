@@ -1,6 +1,6 @@
-def obtenerCiudad(texto: str, cuando : str):
-    ciudad = texto.replace('dime el clima de ', '').replace(' de ' + cuando, '')
-    ciudad = texto.replace('dime el clima en ', '').replace(' de ' + cuando, '')
-    
+import socket
 
-    return ciudad.title()
+
+hostname = socket. gethostname()
+local_ip = socket. gethostbyname(hostname)
+print(local_ip)

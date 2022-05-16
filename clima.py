@@ -40,21 +40,21 @@ def clima(cuando : str, climas : dict) -> str:
     """
     if cuando == "hoy":
         dia = climas['daily'][0]
-        return('Hoy hay una mínima de ' + str(round(dia['temp']['min'], 1)) + ' grados y una máxima de ' + str(round(dia['temp']['max'], 1)) + ' grados con ' + str(dia['weather'][0]['description'])\
-            + ' y una probabilidad de precipitaciones del ' + str(int((dia['pop'] * 100))) + ' por ciento')
+        return('Hoy hay una mínima de ' + str(round(dia['temp']['min'], 1)) + ' grados y una máxima de ' + str(round(dia['temp']['max'], 1)) + ' grados, ' + str(dia['weather'][0]['description'])\
+            + ' y una probabilidad de precipitaciones del ' + str(int((dia['pop'] * 100))) + '%')
     elif cuando == 'mañana':
         dia = climas['daily'][1]
-        return('Mañana habrá una mínima de ' + str(round(dia['temp']['min'], 1)) + ' grados y una máxima de ' + str(round(dia['temp']['max'], 1)) + ' grados con ' + str(dia['weather'][0]['description'])\
-            + ' y una probabilidad de precipitaciones del ' + str(int((dia['pop'] * 100))) + ' por ciento')
+        return('Mañana habrá una mínima de ' + str(round(dia['temp']['min'], 1)) + ' grados y una máxima de ' + str(round(dia['temp']['max'], 1)) + ' grados, ' + str(dia['weather'][0]['description'])\
+            + ' y una probabilidad de precipitaciones del ' + str(int((dia['pop'] * 100))) + '%')
     elif cuando == 'pasado mañana':
         dia = climas['daily'][2]
-        return('Pasado mañana habrá una mínima de ' + str(round(dia['temp']['min'], 1)) + ' grados y una máxima de ' + str(round(dia['temp']['max'], 1)) + ' grados con ' + str(dia['weather'][0]['description'])\
-            + ' y una probabilidad de precipitaciones del ' + str(int((dia['pop'] * 100))) + ' por ciento')
+        return('Pasado mañana habrá una mínima de ' + str(round(dia['temp']['min'], 1)) + ' grados y una máxima de ' + str(round(dia['temp']['max'], 1)) + ' grados, ' + str(dia['weather'][0]['description'])\
+            + ' y una probabilidad de precipitaciones del ' + str(int((dia['pop'] * 100))) + '%')
 
 def obtenerClima(ciudad : str, cuando : str) -> str :
     """
     Obtiene y retorna el clima de la ciudad pasada como parámetro en el momento pasado como parámetro (hoy, mañana o pasado mañana).
     """
     coords = coordenadas(ciudad)
-    climasDe(coords[0], coords[1])
-    return clima(cuando, climasDe)
+    climas = climasDe(coords[0], coords[1])
+    return clima(cuando, climas)
