@@ -8,6 +8,7 @@ import wikipedia
 import random
 import os
 import json
+from clima import *
 
 # Métodos
 
@@ -71,6 +72,12 @@ def cambiarNombre(nombre : str, data : json):
         data['lord'] = nombre
         json.dump(data, f)
 
+def obtenerCiudad(texto: str):
+    split1 = texto.split('en ')
+    split2 = split1[1].split(' de ')
+    return split2[0]
+
+
 def run():
         valores = escucha()
         rec = valores[0]
@@ -107,6 +114,7 @@ def run():
                         order = rec.replace('en google', '').replace('busca', '')
                         resultado = pywhatkit.search(order)
                         talk('Buscando ' + order + " en Google")
+
                     elif 'en wikipedia' in rec:
                         order = rec.replace('en wikipedia', '').replace('busca', '')
                         resultado = wikipedia.summary(order, 2)
@@ -150,6 +158,22 @@ def run():
                     print('Conectarse en el móvil a: ' + str(ip) + ":8000")
                     talk('Iniciando el control remoto')
                     pywhatkit.start_server()
+                
+                # El clima de hoy, mañana o pasado
+                elif 'clima' or 'tiempo' in rec:
+                    ciudad = obtenerCiudad(rec).title()
+                    
+                    if "hoy" in rec:
+                        talk('Este es el clima de hoy en ' + ciudad + ':')
+                        talk(obtenerClima(ciudad, 'hoy'))
+                    elif "mañana" in rec:
+                        talk('Este es el clima de mañana en ' + ciudad + ':')
+                        talk(obtenerClima(ciudad, 'mañana'))
+                    elif "pasado mañana" in rec:
+                        talk('Este es el clima de pasado mañana en ' + ciudad + ':')
+                        talk(obtenerClima(ciudad, "pasado mañana"))
+                    else:
+                        talk('Lo siento, sólo tengo los datos de hoy, mañana y pasado.')
 
                 #Lanza una moneda
                 elif 'lanza una moneda' in rec:

@@ -1,1 +1,5 @@
-{"lord": "marcos", "genero": "hombre"}
+{
+    "lord": "marcos",
+    "genero": "hombre",
+    "API_weather": "bf263a4c1665f63f11a98d00017f622d"
+}

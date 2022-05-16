@@ -1,17 +1,6 @@
-import json
+def obtenerCiudad(texto: str, cuando : str):
+    ciudad = texto.replace('dime el clima de ', '').replace(' de ' + cuando, '')
+    ciudad = texto.replace('dime el clima en ', '').replace(' de ' + cuando, '')
+    
 
-data = {
-    'lord': "prueba",
-    'género': 'hombre'
-}
-
-
-
-with open('config.json', 'w') as f:
-    data['lord'] = "Prueba 2"
-    json.dump(data, f)
-    f.close()
-
-f2 = open('config.json')
-data = json.load(f2)
-print(data)
+    return ciudad.title()
