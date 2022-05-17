@@ -16,7 +16,8 @@ def obtenerFechaPasada(rec):
         dias = 1
         cuandoTxt = 'ayer'
     else:
-        rec = rec.replace("que","").replace("dias","").replace("fue","").replace("hace","").replace("dia","").strip()
+        rec = rec.replace("que","").replace("dias","").replace("fue","").replace("hace","").replace('cual', '').replace('la', '').replace('fecha', '')\
+            .replace('de', '').replace("dia","").strip()
         dias = int(rec)
     
     if dias != 0:
@@ -41,7 +42,8 @@ def obtenerFechaFutura(rec):
         cuandoTxt = "mañana"
         dias = 1
     else:
-        rec = rec.replace('que', '').replace('dias', '').replace('dia', '').replace('sera', '').replace('dentro de', '').replace('en', '').replace('es', '').strip()
+        rec = rec.replace('que', '').replace('dias', '').replace('dia', '').replace('sera', '').replace('dentro de', '').replace('en', '')\
+            .replace('es', '').replace('de', '').replace('cual', '').replace('la', '').replace('fecha', '').strip()
         dias = int(rec)
 
     if dias != 0:
@@ -58,10 +60,11 @@ def obtenerFechaFutura(rec):
 
 def obtenerProximoDiaSemana(rec):
     dia = date.today() + timedelta(days = 1)
-    
     buscado = ""
-    rec = rec.replace('que', '').replace('el', '').replace('dia', '').replace('sera', '').replace('en', '').replace(' es ', '').replace('cae', '').replace('proximo', '').strip()
+    rec = rec.replace('que', '').replace('el', '').replace('dia', '').replace('sera', '').replace('cuando', '').replace('en', '')\
+        .replace(' es ', '').replace('cae', '').replace('proximo', '').strip()
     diasSemana = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo']
+    
     if rec in diasSemana:
         buscado = diasSemana.index(rec)
 
@@ -82,7 +85,4 @@ def obtenerProximoDiaSemana(rec):
     else:
         return 'No entendí qué día quieres saber'
 
-a = obtenerProximoDiaSemana('en que cae el proximo domingo')
-print(a)
-
-
+print(obtenerProximoDiaSemana('cuando es el proximo sabado'))

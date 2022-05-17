@@ -1,4 +1,6 @@
 from datetime import datetime
+from googletrans import Translator
+from googlesearch import search
 from clima import *
 from fechas import *
 import socket, os, webbrowser,pyttsx3, speech_recognition as sr, pywhatkit, wikipedia, random, json, geocoder
@@ -88,13 +90,28 @@ def obtenerCiudad(texto: str, cuando : str) -> str:
     """
     Obtiene la ciudad del texto para ver el clima, pone la primera letra en mayúsculas y la retorna.
     """
+    traductor = Translator()
     ciudad = texto.replace('dime el clima de ', '').replace('dime el clima en ', '').replace('dime el clima de ' , '')
     ciudad = texto.replace('dime el tiempo de ', '').replace('dime el tiempo en ', '').replace('dime el tiempo de ' , '')
     ciudad = ciudad.replace(' de ', '').replace(' en ', '')
     ciudad = ciudad.replace(cuando, '')
     if ciudad == "":
         ciudad = geocoder.ip('me').city
-    return ciudad.title()
+    ciudad = ciudad.title()
+    ciudadEs = traductor.translate(ciudad, dest='es').text
+
+    if ciudadEs == 'Puerto':
+        ciudadEs = 'O Porto'
+
+    return ciudadEs
+
+def URLBusquedaAmazon(texto: str) -> str:
+    urls = []
+    busqueda = texto + " amazon"
+    resultados = search(busqueda, lang="es", num_results=1)
+    for r in resultados:
+        urls.append(r)
+    return urls[0]
 
 
 def run():
@@ -140,10 +157,13 @@ def run():
                     elif 'en wikipedia' in rec:
                         order = rec.replace('en wikipedia', '').replace('busca', '')
                         resultado = wikipedia.summary(order, 2)
-
                         mensaje = eliminarNotasWikipedia(resultado)
-
                         talk(mensaje)
+                    
+                    elif 'en amazon' in rec:
+                        order = rec.replace('en amazon', '').replace('busca', '')
+                        resultado = URLBusquedaAmazon(order)
+                        webbrowser.open(resultado)
                     else:
                         talk('Necesito que me digas dónde buscar')
 
@@ -234,6 +254,11 @@ def run():
                     talk('Ahora nos vemos')
                     os.system("shutdown /r /t 1")
 
+                # Suspende el ordenador
+                elif 'suspende el ordenador' in rec:
+                    import ctypes
+                    ctypes.windll.user32.LockWorkStation()
+
                 # Apaga el ordenador
                 elif 'apaga el ordenador' in rec:
                     talk('Apagando en 3... 2... 1...')
@@ -241,6 +266,7 @@ def run():
 
                 else: 
                     talk('Lo siento, no reconozco: ' + rec)
+            
             except Exception as ex:
                 pass
 

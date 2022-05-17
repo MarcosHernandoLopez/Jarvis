@@ -1,5 +1,2 @@
-import geocoder
-
-g = geocoder.ip('me')
-
-print(g.city)
+import ctypes
+ctypes.windll.user32.LockWorkStation()
