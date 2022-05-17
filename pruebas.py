@@ -1,6 +1,5 @@
-import socket
+import geocoder
 
+g = geocoder.ip('me')
 
-hostname = socket. gethostname()
-local_ip = socket. gethostbyname(hostname)
-print(local_ip)
+print(g.city)

@@ -1,14 +1,7 @@
 from datetime import datetime
-import socket
-import webbrowser
-import pyttsx3
-import speech_recognition as sr
-import pywhatkit
-import wikipedia
-import random
-import os
-import json
 from clima import *
+from fechas import *
+import socket, os, webbrowser,pyttsx3, speech_recognition as sr, pywhatkit, wikipedia, random, json, geocoder
 
 
 # Métodos
@@ -21,7 +14,10 @@ def talk(texto : str):
     engine.say(texto)
     engine.runAndWait()
 
-def eliminarNotasWikipedia(texto : str):
+def eliminarNotasWikipedia(texto : str) -> str:
+    """
+    Elimina los [Nota N] del texto a leer por el asistente
+    """
     sinNotas = ""
     corchete = False
 
@@ -37,23 +33,33 @@ def eliminarNotasWikipedia(texto : str):
     sinNotas = sinNotas.replace(']', '')
     return sinNotas
 
-def config():
+def config() -> dict:
+    """
+    Lee el fichero JSON y guarda su contenido en un diccionario que será retornado
+    """
     f = open('config.json')
     data = json.load(f)
     f.close()
     return data
 
-def eliminarTildes(texto : str):
-    return texto.replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u")
+def eliminarTildes(texto : str) -> str:
+    """
+    Elimina las tildes del texto
+    """
+    return texto.replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u").replace("à", "a").replace("è", "e").replace("ì", "i").replace("ò", "o").replace("ù", "u")
 
-def escucha():
+def escucha() -> list:
+    """
+    Crea la escucha de los comandos de voz. Retorna el comando y si se ha dicho la palabra de activación
+    """
     listener = sr.Recognizer()
     estado = False
 
     with sr.Microphone() as source:
         print("Escuchando...")
         listener.adjust_for_ambient_noise(source, duration=1)
-        audio = listener.listen(source)
+        listener.pause_threshold = 1
+        audio = listener.listen(source, timeout=5, phrase_time_limit=10)
         rec = ""
 
         try:
@@ -70,26 +76,38 @@ def escucha():
     return rec, estado
 
 def cambiarNombre(nombre : str, data : json):
+    """
+    Cambia el apartado 'master' de config.json al nombre dicho.
+    """
     with open('config.json', 'w') as f:
+        
         data['master'] = nombre
         json.dump(data, f)
 
-def obtenerCiudad(texto: str, cuando : str):
+def obtenerCiudad(texto: str, cuando : str) -> str:
+    """
+    Obtiene la ciudad del texto para ver el clima, pone la primera letra en mayúsculas y la retorna.
+    """
     ciudad = texto.replace('dime el clima de ', '').replace('dime el clima en ', '').replace('dime el clima de ' , '')
     ciudad = texto.replace('dime el tiempo de ', '').replace('dime el tiempo en ', '').replace('dime el tiempo de ' , '')
     ciudad = ciudad.replace(' de ', '').replace(' en ', '')
     ciudad = ciudad.replace(cuando, '')
+    if ciudad == "":
+        ciudad = geocoder.ip('me').city
     return ciudad.title()
 
 
 def run():
-        valores = escucha()
-        rec = valores[0]
-        estado = valores[1]
-        print("-----------------DEBUG-----------------")
-        print("Comando: " + rec + "          Estado: " + str(estado))
-        print("---------------------------------------")
-        if estado:
+    """
+    Llama al método 'escucha()' y dependiendo de los valores retornados ejecuta un comando de voz (ninguno si estado == False o si no se tiene ese comando).
+    """
+    valores = escucha()
+    rec = valores[0]
+    estado = valores[1]
+    print("-----------------DEBUG-----------------")
+    print("Comando: " + rec + " Estado: " + str(estado))
+    print("---------------------------------------")
+    if estado:
             try:
                 # Cuenta un chiste de la lista
                 if "cuentame un chiste" in rec:
@@ -232,7 +250,6 @@ wikipedia.set_lang('es')
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')
 volumen = engine.getProperty('volume')
-
 engine.setProperty('voice', voices[2].id)
 engine.setProperty('rate', 160)
 data = config()
@@ -241,5 +258,6 @@ nombre = "jarvis"
 
 
 talk("Hola "+ data["master"] +", soy Jarvis.")
+# Mientras no se apague el asistente seguirá ejecutándose siempre.
 while True:
     run()
