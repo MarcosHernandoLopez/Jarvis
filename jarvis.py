@@ -3,7 +3,9 @@ from googletrans import Translator
 from googlesearch import search
 from clima import *
 from fechas import *
-import socket, os, webbrowser,pyttsx3, speech_recognition as sr, pywhatkit, wikipedia, random, json, geocoder
+from setupCalendario import obtenerServicioCalendario
+from calendario import *
+import socket, os, webbrowser,pyttsx3, speech_recognition as sr, pywhatkit, wikipedia, random, json, geocoder, time
 
 
 # Métodos
@@ -12,13 +14,50 @@ def talk(texto : str):
     """
     Dice el mensaje pasado como parámetro
     """
-
     engine.say(texto)
     engine.runAndWait()
+    if engine._inLoop:
+        engine.endLoop()
+
+def listen() -> str:
+    """
+    Escucha el audio y retorna el texto de este
+    """
+
+    listener = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Escuchando...")
+        listener.adjust_for_ambient_noise(source, duration=1)
+        listener.pause_threshold = 0.8
+        audio = listener.listen(source, timeout=1)
+        rec = ""
+        try:
+            rec = listener.recognize_google(audio, language='es-ES').lower()
+        except sr.UnknownValueError:
+            pass
+        except sr.RequestError as e:
+            print(f'No se pudo obtener respuesta del servicio de Google Speech Recognition: {e}')
+
+    return rec.lower()
+
+def comando() -> list:
+    """
+    Crea la escucha de los comandos de voz. Retorna el comando y si se ha dicho la palabra de activación
+    """
+    estado = False
+    rec = listen()
+    try:
+        rec = rec.replace('yarbiss', 'jarvis').replace('yarbis', 'jarvis')
+        if nombre in rec:
+            rec = eliminarTildes(rec.replace(nombre, "")).strip()
+            estado = True
+    except:
+        pass
+    return rec, estado
 
 def eliminarNotasWikipedia(texto : str) -> str:
     """
-    Elimina los [Nota N] del texto a leer por el asistente
+    Elimina los [Nota N] del texto pasado por parámetro por el asistente
     """
     sinNotas = ""
     corchete = False
@@ -49,33 +88,6 @@ def eliminarTildes(texto : str) -> str:
     Elimina las tildes del texto
     """
     return texto.replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u").replace("à", "a").replace("è", "e").replace("ì", "i").replace("ò", "o").replace("ù", "u")
-
-def escucha() -> list:
-    """
-    Crea la escucha de los comandos de voz. Retorna el comando y si se ha dicho la palabra de activación
-    """
-    listener = sr.Recognizer()
-    estado = False
-
-    with sr.Microphone() as source:
-        print("Escuchando...")
-        listener.adjust_for_ambient_noise(source, duration=1)
-        listener.pause_threshold = 1
-        audio = listener.listen(source, timeout=5, phrase_time_limit=10)
-        rec = ""
-
-        try:
-            rec = listener.recognize_google(audio, language='es-ES').lower()
-            rec = rec.replace('yarbiss', 'jarvis').replace('yarbis', 'jarvis')
-
-            if nombre in rec:
-                rec = eliminarTildes(rec.replace(nombre, "")).strip()
-                estado = True
-
-        except:
-            pass
-    
-    return rec, estado
 
 def cambiarNombre(nombre : str, data : json):
     """
@@ -113,12 +125,33 @@ def URLBusquedaAmazon(texto: str) -> str:
         urls.append(r)
     return urls[0]
 
+def obtenerTitulo():
+    talk('Dime el título del evento')
+    time.sleep(0.5)
+    return listen
+
+def obtenerDesc():
+    talk('Dime la descripción del evento')
+    time.sleep(0.5)
+    return obtenerDesc()
+
+def obtenerInicio():
+    talk('Dime cuándo empieza el evento')
+    time.sleep(0.5)
+    texto = listen()
+
+def obtenerFinal():
+    talk('Dime cuándo termina el evento')
+    time.sleep(0.5)
+    texto = listen()
+
+
 
 def run():
     """
     Llama al método 'escucha()' y dependiendo de los valores retornados ejecuta un comando de voz (ninguno si estado == False o si no se tiene ese comando).
     """
-    valores = escucha()
+    valores = comando()
     rec = valores[0]
     estado = valores[1]
     print("-----------------DEBUG-----------------")
@@ -272,6 +305,7 @@ def run():
 
 
 # Configuración
+
 wikipedia.set_lang('es')
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')
@@ -282,8 +316,8 @@ data = config()
 nombre = "jarvis"
 
 
-
-talk("Hola "+ data["master"] +", soy Jarvis.")
-# Mientras no se apague el asistente seguirá ejecutándose siempre.
-while True:
-    run()
+if __name__ == "__main__":
+    talk("Hola "+ data["master"] +", soy Yarvis.")
+    # Mientras no se apague el asistente seguirá ejecutándose siempre.
+    while True:
+        run()

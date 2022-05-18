@@ -84,5 +84,3 @@ def obtenerProximoDiaSemana(rec):
             return f'El próximo {rec} será el día {diaStr}'
     else:
         return 'No entendí qué día quieres saber'
-
-print(obtenerProximoDiaSemana('cuando es el proximo sabado'))
