@@ -128,22 +128,49 @@ def URLBusquedaAmazon(texto: str) -> str:
 def obtenerTitulo():
     talk('Dime el título del evento')
     time.sleep(0.5)
-    return listen
+    return listen()
 
 def obtenerDesc():
     talk('Dime la descripción del evento')
     time.sleep(0.5)
-    return obtenerDesc()
+    return listen()
+
+def obtenerFecha():
+    try:
+        listaMeses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
+        for mes in listaMeses:
+            if mes in texto:
+                texto = texto.replace(mes, str(listaMeses.index(mes) + 1))
+
+        texto = texto.replace(" a las ", " de ").replace(" del ", " de ").split(" de ")
+
+        if len(texto[1]) == 1:
+            texto[1] = "0" + texto[1]
+
+        if len(texto) < 4:
+            texto.append("00:00")
+        elif len(texto) > 4:
+            for i in range(4, len(texto) - 1, 1):
+                texto.remove(texto[i])
+
+        fechaStr = texto[2] + "-" + texto[1] + "-" + texto[0] + " " + texto[3]
+        fecha = datetime.fromisoformat(fechaStr).isoformat(timespec='minutes')
+        return fecha
+    except Exception as ex:
+        print('Error: ' + str(ex))
+        return None
 
 def obtenerInicio():
     talk('Dime cuándo empieza el evento')
     time.sleep(0.5)
     texto = listen()
+    return obtenerFecha(texto)
 
 def obtenerFinal():
     talk('Dime cuándo termina el evento')
     time.sleep(0.5)
     texto = listen()
+    return obtenerFecha(texto)
 
 
 
