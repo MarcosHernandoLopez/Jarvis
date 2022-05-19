@@ -1,18 +1,39 @@
-Jarvis es un asistente de voz creado con Python que dispone de los siguientes comandos:
-*Todos los comandos de voz requieren nombrar primero al asistente*
-  - Cuéntame un chiste => Cuenta un chiste elegido aleatoriamente dentro de una lista.
-  - Reproduce => Reproduce el elemento dicho en YouTube.
-  - Qué hora es => Dice la hora actual del sistema.
-  - Busca => Si se dice 'en Google' busca lo dicho en este. Si se dice 'en Wikipedia' lo hace en esta.
-  - Abre => 'Youtube' abre la página de YouTube. 'Calculadora' inicia la calculadora. 'Explorador de ficheros/archivos' abre a este.
-  - Captura de pantalla => Hace una captura de pantalla de la pantalla principal.
-  - Control remoto => Inicia el control remoto para poder usar el ordenador con el teléfono móvil.
-  - Clima/Tiempo => Retorna el clima que hará hoy, mañana o pasado, depende lo que se indique
-  - Como estas => Dice una frase aleatoria de una lista
-  - Descansa => Apaga el asistente.
-  - Cierra sesión => Cierra la sesión
-  - Reinicia el ordenador =>  Reinicia el ordenador
-  - Apaga el ordenador => Apaga el ordenador.
-  - Cuál es mi nombre => Te dice el nombre con el que te llamará
-  - Llámame => Te permite cambiar el nombre al que le digas
-  - Lanza una moneda => Elige entre cara y cruz y dice el mensaje
+<h1>Jarvis es una asistente virtual programado en python</h1>
+<h2>*Todos los comandos requieren que primero se nombre al asistente*</h2>
+  <h3>Miscelanía</h3>
+    - Cuéntame un chiste => Cuenta un chiste aleatorio elegido de una lista.
+    - Cómo estás => Dice una frase elegida aleatoriamente.
+    - Llámame => Cambia el nombre con el que te llamará el asistente.
+    - Cuál es mi nombre => Dice el nombre con el que te llamará el asistente.
+    - Lanza una moneda => Lanza una moneda y devuelve cara o cruz.
+  <h3>Google Calendar</h3>
+    *Esta sección necesita de la palabra 'Evento' para funcionar*
+    - Crea / Nuevo / Añade => Crea un nuevo evento en el calendario.
+    - Cuáles / Dime / Qué eventos =>  - 'Hoy' => Dice los eventos de hoy.
+                                      - 'Semana' => Dice los eventos de lo que queda de semana (hasta el domingo, este incluído).
+                                      - Resto => Dice todos los eventos.
+  <h3>Internet</h3>
+    - Reproduce => Reproduce un video en YouTube.
+    - Busca =>  - 'Google' => Busca en Google.
+                - 'Wikipedia' => Busca en Wikipedia.
+                - 'Amazon' => Busca en Amazon.
+  <h3>Abrir</h3>
+    - Abre => - 'YouTube' => Abre Youtube.
+              - 'Calculadora' => Abre la calculadora.
+              - 'Explorador de archivos / ficheros' => Abre el explorador de archivos.
+  <h3>Hora</h3>
+    - Qué hora es => Dice la hora actual.
+  <h3>Clima</h3>
+    - Clima =>  - 'Hoy' => Dice el clima de hoy en la ciudad dicha.
+                - 'Mañana' => Dice el clima de mañana en la ciudad dicha.
+                - 'Pasado mañana' => Dice el clima de pasado mañana en la ciudad dicha.
+  <h3>Fechas</h3>
+
+  <h3>Herramientas</h3>
+    - Captura de pantalla => Hace una captura de pantalla.
+    - Control remoto => Activa el servidor para poder controlar el teclado y ratón con el teléfono. Para esto ir al navegador y escribir tu ip seguido de :8000
+  <h3>Alimentación</h3>
+   - Cierra sesión => Cierra la sesión.
+   - Reinicia el ordenador => Reinicia el ordenador.
+   - Suspende el ordenador => Suspende el ordenador.
+   - Apaga el ordenador => Apaga el ordenador.

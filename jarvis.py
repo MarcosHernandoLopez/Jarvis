@@ -1,10 +1,9 @@
 from datetime import datetime
 from googletrans import Translator
 from googlesearch import search
+from calendario import *
 from clima import *
 from fechas import *
-from setupCalendario import obtenerServicioCalendario
-from calendario import *
 import socket, os, webbrowser,pyttsx3, speech_recognition as sr, pywhatkit, wikipedia, random, json, geocoder, time
 
 
@@ -12,7 +11,7 @@ import socket, os, webbrowser,pyttsx3, speech_recognition as sr, pywhatkit, wiki
 
 def talk(texto : str):
     """
-    Dice el mensaje pasado como parámetro
+    Dice el mensaje pasado como parámetro.
     """
     engine.say(texto)
     engine.runAndWait()
@@ -21,7 +20,7 @@ def talk(texto : str):
 
 def listen() -> str:
     """
-    Escucha el audio y retorna el texto de este
+    Escucha el audio y retorna el texto de este.
     """
 
     listener = sr.Recognizer()
@@ -29,7 +28,7 @@ def listen() -> str:
         print("Escuchando...")
         listener.adjust_for_ambient_noise(source, duration=1)
         listener.pause_threshold = 0.8
-        audio = listener.listen(source, timeout=1)
+        audio = listener.listen(source, timeout=5)
         rec = ""
         try:
             rec = listener.recognize_google(audio, language='es-ES').lower()
@@ -42,14 +41,15 @@ def listen() -> str:
 
 def comando() -> list:
     """
-    Crea la escucha de los comandos de voz. Retorna el comando y si se ha dicho la palabra de activación
+    Crea la escucha de los comandos de voz. Retorna el comando y si se ha dicho la palabra de activación.
     """
     estado = False
     rec = listen()
     try:
         rec = rec.replace('yarbiss', 'jarvis').replace('yarbis', 'jarvis')
         if nombre in rec:
-            rec = eliminarTildes(rec.replace(nombre, "")).strip()
+            rec = rec.replace(nombre, "")
+            rec = eliminarTildes(rec).strip()
             estado = True
     except:
         pass
@@ -57,7 +57,7 @@ def comando() -> list:
 
 def eliminarNotasWikipedia(texto : str) -> str:
     """
-    Elimina los [Nota N] del texto pasado por parámetro por el asistente
+    Elimina los [Nota N] del texto pasado por parámetro por el asistente.
     """
     sinNotas = ""
     corchete = False
@@ -76,7 +76,7 @@ def eliminarNotasWikipedia(texto : str) -> str:
 
 def config() -> dict:
     """
-    Lee el fichero JSON y guarda su contenido en un diccionario que será retornado
+    Lee el fichero JSON y guarda su contenido en un diccionario que será retornado.
     """
     f = open('config.json')
     data = json.load(f)
@@ -85,7 +85,7 @@ def config() -> dict:
 
 def eliminarTildes(texto : str) -> str:
     """
-    Elimina las tildes del texto
+    Elimina las tildes del texto.
     """
     return texto.replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u").replace("à", "a").replace("è", "e").replace("ì", "i").replace("ò", "o").replace("ù", "u")
 
@@ -118,6 +118,9 @@ def obtenerCiudad(texto: str, cuando : str) -> str:
     return ciudadEs
 
 def URLBusquedaAmazon(texto: str) -> str:
+    """
+    Retorna la url de una búsqueda de Amazon.
+    """
     urls = []
     busqueda = texto + " amazon"
     resultados = search(busqueda, lang="es", num_results=1)
@@ -125,52 +128,78 @@ def URLBusquedaAmazon(texto: str) -> str:
         urls.append(r)
     return urls[0]
 
-def obtenerTitulo():
+def obtenerTitulo() -> str:
+    """
+    Obtiene el título del evento.
+    """
     talk('Dime el título del evento')
-    time.sleep(0.5)
-    return listen()
+    titulo = listen()
+    print(titulo)
+    return titulo
 
-def obtenerDesc():
+def obtenerDesc() -> str:
+    """
+    Obtiene la descripción de un evento.
+    """
     talk('Dime la descripción del evento')
-    time.sleep(0.5)
-    return listen()
+    desc = listen()
+    print(desc)
+    return desc
 
-def obtenerFecha():
+def obtenerFecha(rec) -> str | None:
+    """
+    Extrae la fecha del texto pasado como parámetro.
+    """
     try:
+
+        if 'hoy' in rec:
+            hoy = datetime.today().isoformat(timespec='minutes')
+            return hoy
+
         listaMeses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
         for mes in listaMeses:
-            if mes in texto:
-                texto = texto.replace(mes, str(listaMeses.index(mes) + 1))
+            if mes in rec:
+                rec = rec.replace(mes, str(listaMeses.index(mes) + 1))
 
-        texto = texto.replace(" a las ", " de ").replace(" del ", " de ").split(" de ")
+        rec = rec.replace("a las", " de ").replace("del", " de ").replace("el", "").replace(" ", "").split("de")
 
-        if len(texto[1]) == 1:
-            texto[1] = "0" + texto[1]
+        if len(rec[1]) == 1:
+            rec[1] = "0" + rec[1]
 
-        if len(texto) < 4:
-            texto.append("00:00")
-        elif len(texto) > 4:
-            for i in range(4, len(texto) - 1, 1):
-                texto.remove(texto[i])
+        if len(rec) < 4:
+            rec.append("00:00")
+        elif len(rec) > 4:
+            for i in range(4, len(rec) - 1, 1):
+                rec.remove(rec[i])
 
-        fechaStr = texto[2] + "-" + texto[1] + "-" + texto[0] + " " + texto[3]
-        fecha = datetime.fromisoformat(fechaStr).isoformat(timespec='minutes')
+        fechaStr = rec[2] + "-" + rec[1] + "-" + rec[0] + " " + rec[3]
+        fecha = datetime.fromisoformat(fechaStr).isoformat(timespec='seconds')
         return fecha
     except Exception as ex:
         print('Error: ' + str(ex))
         return None
 
-def obtenerInicio():
+def obtenerInicio() -> str | None:
+    """
+    Retorna la fecha de inicio del evento
+    """
     talk('Dime cuándo empieza el evento')
-    time.sleep(0.5)
     texto = listen()
-    return obtenerFecha(texto)
+    print('Texto: ' + texto)
+    fInicio = obtenerFecha(texto)
+    print('fInicio: ' + str(fInicio))
+    return fInicio
 
-def obtenerFinal():
+def obtenerFinal() -> str | None:
+    """
+    Retorna la fecha del final del evento.
+    """
     talk('Dime cuándo termina el evento')
-    time.sleep(0.5)
     texto = listen()
-    return obtenerFecha(texto)
+    print('Texto: ' + texto)
+    fFinal = obtenerFecha(texto)
+    print('fFinal: ' + str(fFinal))
+    return fFinal
 
 
 
@@ -182,7 +211,7 @@ def run():
     rec = valores[0]
     estado = valores[1]
     print("-----------------DEBUG-----------------")
-    print("Comando: " + rec + " Estado: " + str(estado))
+    print("Comando: " + rec + "     Palabra clave: " + str(estado))
     print("---------------------------------------")
     if estado:
             try:
@@ -207,7 +236,7 @@ def run():
                     hora = datetime.now().strftime('%H:%M')
                     talk("Son las " + hora)
 
-                # Busca en Google o en Wikipedia
+                # Busca en Google, en Wikipedia o en Amazon
                 elif 'busca' in rec:
                     if 'en google' in rec:
                         order = rec.replace('en google', '').replace('busca', '')
@@ -261,6 +290,70 @@ def run():
                     talk('Iniciando el control remoto')
                     pywhatkit.start_server()
                 
+                # Trabajo sobre Google Calendar
+                elif 'evento' in rec:
+                    # Nuevo evento
+                    if 'crea' in rec or 'nuevo' in rec or 'añade' in rec:
+                        titulo, desc, inicio, final = obtenerTitulo(), obtenerDesc(), obtenerInicio(), obtenerFinal()
+                        if inicio is None:
+                            talk('No entendí la fecha de inicio del evento.')
+                        elif final is None:
+                            talk('No entendí la fecha de fin del evento.')
+                        else:
+                            talk(crearEvento(titulo, desc, inicio, final))
+                    elif 'cuales' in rec or 'dime' in rec or 'que eventos' in rec:
+                        # Eventos de hoy
+                        if 'hoy' in rec:
+                            talk('Estos son tus eventos de hoy:')
+                            eventosHoy = obtenerEventos()[0]
+                            for evento in eventosHoy:
+                                titulo = evento['summary']
+                                fInicio = extraerFechaEvento(evento)[0]
+                                fFinal = extraerFechaEvento(evento)[1]
+                                inicio = extraerTiemposEvento(evento)[0]
+                                final = extraerTiemposEvento(evento)[1]
+
+                                if fInicio == fFinal:
+                                    talk(f'De {inicio} a {final}: {titulo}')
+                                else:
+                                    talk(f'De {inicio} a las {final} del {fFinal}: {titulo}')
+                        # Eventos de esta semana
+                        elif 'semana' in rec:
+                            talk('Estos son tus eventos de lo que queda de semana:')
+                            eventosEstaSemana = obtenerEventos()[1]
+                            for evento in eventosEstaSemana:
+                                titulo = evento['summary']
+                                fInicio = extraerFechaEvento(evento)[0]
+                                fFinal = extraerFechaEvento(evento)[1]
+                                inicio = extraerTiemposEvento(evento)[0]
+                                final = extraerTiemposEvento(evento)[1]
+                                talk(f'De {inicio} del {fInicio} a las {final} del {fFinal}: {titulo}')
+                        # Todos los eventos
+                        else:
+                            talk('Estos son todos tus eventos:')
+                            eventosTodos = obtenerEventos()[2]
+                            for evento in eventosTodos:
+                                titulo = evento['summary']
+                                fInicio = extraerFechaEvento(evento)[0]
+                                fFinal = extraerFechaEvento(evento)[1]
+                                inicio = extraerTiemposEvento(evento)[0]
+                                final = extraerTiemposEvento(evento)[1]
+                                talk(f'De {inicio} del {fInicio} a las {final} del {fFinal}: {titulo}')
+
+                # Trabajo sobre fechas
+                elif 'que dia' in rec or 'cuando es' in rec:
+                    if 'lunes' in rec or 'martes' in rec or 'miercoles' in rec or 'jueves' in rec or 'viernes' in rec or 'sabado' in rec or 'domingo' in rec:
+                        talk(obtenerProximoDiaSemana(rec))
+                    elif 'dentro de' in rec or 'sera' in rec:
+                        talk(obtenerFechaFutura(rec))
+                    elif 'era' in rec or 'fue' in rec:
+                        talk(obtenerFechaPasada(rec))
+                    elif 'es' in rec:
+                        talk(obtenerFechaHoy())
+                    else:
+                        talk('No entendí: ' + rec)
+                        talk("Pruebe con 'qué dia es hoy', 'que día será' o 'qué día fue'.")
+
                 # El clima de hoy, mañana o pasado
                 elif 'clima' in rec or 'tiempo' in rec:
        
@@ -278,7 +371,6 @@ def run():
                         ciudad = obtenerCiudad(rec, 'mañana')
                         talk('Este es el clima de mañana en ' + ciudad + ':')
                         talk(obtenerClima(ciudad, 'mañana'))
-
 
                     else:
                         talk('Lo siento, sólo tengo los datos de hoy, mañana y pasado.')
@@ -328,7 +420,7 @@ def run():
                     talk('Lo siento, no reconozco: ' + rec)
             
             except Exception as ex:
-                pass
+                print('Error: ' + str(ex))
 
 
 # Configuración

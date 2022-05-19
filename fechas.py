@@ -1,13 +1,19 @@
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 import locale
 
 locale.setlocale(locale.LC_ALL, 'es_ES')
 
-def obtenerFechaHoy():
+def obtenerFechaHoy() -> str:
+    """
+    Retorna la fecha de hoy.
+    """
     hoy = date.today().strftime("%A, %d de %B del %Y").capitalize()
     return hoy
 
-def obtenerFechaPasada(rec):
+def obtenerFechaPasada(rec : str) -> str:
+    """
+    Retorna el día que fue hace N días dichos en el mensaje pasado como parámetro.
+    """
     cuandoTxt = ""
     if 'anteayer' in rec or 'antes de ayer' in rec:
         dias = 2
@@ -17,7 +23,7 @@ def obtenerFechaPasada(rec):
         cuandoTxt = 'ayer'
     else:
         rec = rec.replace("que","").replace("dias","").replace("fue","").replace("hace","").replace('cual', '').replace('la', '').replace('fecha', '')\
-            .replace('de', '').replace("dia","").strip()
+            .replace('de', '').replace("dia","").replace("era","").strip()
         dias = int(rec)
     
     if dias != 0:
@@ -33,7 +39,10 @@ def obtenerFechaPasada(rec):
     else:
         return 'No entendí'
 
-def obtenerFechaFutura(rec):
+def obtenerFechaFutura(rec : str) -> str:
+    """
+    Retorna el día que será dentro de N días dichos en el texto pasado como parámetro.
+    """
     cuandoTxt = ""
     if 'pasado mañana' in rec:
         cuandoTxt = "pasado mañana"
@@ -58,7 +67,10 @@ def obtenerFechaFutura(rec):
     else:
         return 'No entendí'
 
-def obtenerProximoDiaSemana(rec):
+def obtenerProximoDiaSemana(rec : str) -> str:
+    """
+    Obtiene cuándo será el próximo X (lunes, martes...) dicho en el texto pasado como parámetro.
+    """
     dia = date.today() + timedelta(days = 1)
     buscado = ""
     rec = rec.replace('que', '').replace('el', '').replace('dia', '').replace('sera', '').replace('cuando', '').replace('en', '')\
