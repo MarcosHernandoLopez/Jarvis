@@ -1,6 +1,6 @@
-<h1>Jarvis es una asistente virtual programado en python</h1>
+# <h1>Jarvis es una asistente virtual programado en python</h1>
 <h2>*Todos los comandos requieren que primero se nombre al asistente*</h2>
-  <h3>Miscelanía</h3>
+  ## <h3>Miscelanía</h3>
     - Cuéntame un chiste => Cuenta un chiste aleatorio elegido de una lista.
     - Cómo estás => Dice una frase elegida aleatoriamente.
     - Llámame => Cambia el nombre con el que te llamará el asistente.
