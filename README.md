@@ -55,7 +55,11 @@
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Mañana' => Dice el clima de mañana en la ciudad dicha.  
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Pasado mañana' => Dice el clima de pasado mañana en la ciudad dicha.  
   ## Fechas
-
+  - Que día / Cuándo es:  
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Un día de la semana => Dice cuándo es el próximo día de la semana dicho (lunes, martes...).
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Dentro de' / 'Será' => Dice qué día será dentro de X días dichos, mañana o pasado mañana.
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Era' / 'Fue' => Dice qué día fue hace X días dechos, ayer o anteayer.
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Es' => Dice qué día es hoy.
   ## Herramientas
   - Captura de pantalla:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hace una captura de pantalla.
   - Control remoto:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Activa el servidor para poder controlar el teclado y ratón con el teléfono.Para esto ir al navegador y escribir tu ip seguido de :8000

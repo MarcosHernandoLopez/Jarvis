@@ -59,25 +59,22 @@ def obtenerEventos() -> list | None:
         print('Error: ' + str(ex))
         return None
 
-def eliminarEvento(listaEventos : list, tituloEvento : str) -> str:
+def eliminarEvento(idEvento : str) -> str:
     """
     Comprueba que en la lista de eventos pasada haya alguno con el título pasado como parámetro y si es así borra a este.
     """
     try:
-        idBorrar = ''
-        for evento in listaEventos:
-            if evento['summary'].lower() == tituloEvento.lower():
-                idBorrar = evento['id']
-        
-        if idBorrar == '':
-            return 'No hay ningún evento con ese título'
-        else:
-            service.events().delete(calendarId = 'primary', eventId = idBorrar).execute()
-            return 'Evento eliminado correctamente'
+        service.events().delete(calendarId = 'primary', eventId = idEvento).execute()
+        return 'Evento eliminado correctamente'
 
     except Exception as ex:
         print('Error: ' + str(ex))
         return 'Hubo un problema al eliminar el evento.'
+
+def eventoExiste(listaEventos : list, tituloEvento : str) -> str:
+    for evento in listaEventos:
+        if evento['summary'].lower() == tituloEvento.lower():
+            return evento
 
 def extraerTiemposEvento(evento) -> str:
     """
@@ -126,14 +123,3 @@ def extraerFechaEvento(evento) -> str:
     final = diaFinal[2] + " de " + mes
 
     return inicio, final
-
-
-
-
-
-
-# eventos = obtenerEventos()[2]
-
-# for evento in eventos:
-    # print('Inicio: ' + extraerFechaEvento(evento)[0])
-    # print('Final: ' + extraerFechaEvento(evento)[1])

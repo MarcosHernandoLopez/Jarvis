@@ -1,10 +1,9 @@
 from datetime import datetime
-from googletrans import Translator
 from googlesearch import search
 from calendario import *
 from clima import *
 from fechas import *
-import socket, os, webbrowser,pyttsx3, speech_recognition as sr, pywhatkit, wikipedia, random, json, geocoder, time
+import socket, os, webbrowser,pyttsx3, speech_recognition as sr, pywhatkit, wikipedia, random, json
 
 
 # Métodos
@@ -97,25 +96,6 @@ def cambiarNombre(nombre : str, data : json):
         
         data['master'] = nombre
         json.dump(data, f)
-
-def obtenerCiudad(texto: str, cuando : str) -> str:
-    """
-    Obtiene la ciudad del texto para ver el clima, pone la primera letra en mayúsculas y la retorna.
-    """
-    traductor = Translator()
-    ciudad = texto.replace('dime el clima de ', '').replace('dime el clima en ', '').replace('dime el clima de ' , '')
-    ciudad = texto.replace('dime el tiempo de ', '').replace('dime el tiempo en ', '').replace('dime el tiempo de ' , '')
-    ciudad = ciudad.replace(' de ', '').replace(' en ', '')
-    ciudad = ciudad.replace(cuando, '')
-    if ciudad == "":
-        ciudad = geocoder.ip('me').city
-    ciudad = ciudad.title()
-    ciudadEs = traductor.translate(ciudad, dest='es').text
-
-    if ciudadEs == 'Puerto':
-        ciudadEs = 'O Porto'
-
-    return ciudadEs
 
 def URLBusquedaAmazon(texto: str) -> str:
     """
@@ -339,6 +319,22 @@ def run():
                                 inicio = extraerTiemposEvento(evento)[0]
                                 final = extraerTiemposEvento(evento)[1]
                                 talk(f'De {inicio} del {fInicio} a las {final} del {fFinal}: {titulo}')
+                    # Elimina un evento según su título
+                    elif 'borra' in rec or 'elimina' in rec:
+                        eventos = obtenerEventos()[2]
+                        titulo = obtenerTitulo()
+                        evento = eventoExiste(eventos, titulo)
+
+                        if evento is None:
+                            talk('No se ha encontrado ningún evento con título ' + titulo)
+                        else:
+                            talk(f'¿Eliminar el evento {evento["summary"]}? Diga sí para confirmar')
+                            confirmar = listen().replace('í', 'i').replace('ì', 'i')
+
+                            if confirmar == 'si':
+                                talk(eliminarEvento(evento['id']))
+                            else:
+                                talk('Evento no eliminado')
 
                 # Trabajo sobre fechas
                 elif 'que dia' in rec or 'cuando es' in rec:
@@ -358,17 +354,17 @@ def run():
                 elif 'clima' in rec or 'tiempo' in rec:
        
                     if "hoy" in rec:
-                        ciudad = obtenerCiudad(rec, 'hoy')
+                        ciudad = obtenerCiudadClima(rec, 'hoy')
                         talk('Este es el clima de hoy en ' + ciudad + ':')
                         talk(obtenerClima(ciudad, 'hoy'))
 
                     elif "pasado mañana" in rec:
-                        ciudad = obtenerCiudad(rec, 'pasado mañana')
+                        ciudad = obtenerCiudadClima(rec, 'pasado mañana')
                         talk('Este es el clima de pasado mañana en ' + ciudad + ':')
                         talk(obtenerClima(ciudad, "pasado mañana"))
 
                     elif "mañana" in rec:
-                        ciudad = obtenerCiudad(rec, 'mañana')
+                        ciudad = obtenerCiudadClima(rec, 'mañana')
                         talk('Este es el clima de mañana en ' + ciudad + ':')
                         talk(obtenerClima(ciudad, 'mañana'))
 

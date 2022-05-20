@@ -1,4 +1,6 @@
 import json, requests
+import geocoder
+from googletrans import Translator
 from fechas import *
 
 with open('config.json', 'r') as f:
@@ -20,6 +22,25 @@ def coordenadas(ciudad : str) -> list:
     lat = location['lat']
     lon = location['lon']
     return lat, lon
+
+def obtenerCiudadClima(texto: str, cuando : str) -> str:
+    """
+    Obtiene la ciudad del texto para ver el clima, pone la primera letra en mayúsculas y la retorna.
+    """
+    traductor = Translator()
+    ciudad = texto.replace('dime el clima de ', '').replace('dime el clima en ', '').replace('dime el clima de ' , '')
+    ciudad = texto.replace('dime el tiempo de ', '').replace('dime el tiempo en ', '').replace('dime el tiempo de ' , '')
+    ciudad = ciudad.replace(' de ', '').replace(' en ', '')
+    ciudad = ciudad.replace(cuando, '')
+    if ciudad == "":
+        ciudad = geocoder.ip('me').city
+    ciudad = ciudad.title()
+    ciudadEs = traductor.translate(ciudad, dest='es').text
+
+    if ciudadEs == 'Puerto':
+        ciudadEs = 'O Porto'
+
+    return ciudadEs
 
 def climasDe(lat : float, lon : float) -> dict:
     """
