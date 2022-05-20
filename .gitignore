@@ -1,1 +1,4 @@
 venv/
+credentials.json
+config.json
+token.json
