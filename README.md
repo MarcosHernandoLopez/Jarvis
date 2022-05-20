@@ -7,16 +7,17 @@
   - Cuál es mi nombre => Dice el nombre con el que te llamará el asistente.
   - Lanza una moneda => Lanza una moneda y devuelve cara o cruz.
   ## Google Calendar
-    Esta sección necesita de la palabra 'Evento' para funcionar
+    > Esta sección necesita de la palabra 'Evento' para funcionar
   - Crea / Nuevo / Añade => Crea un nuevo evento en el calendario.
   - Cuáles / Dime / Qué eventos =>    - 'Hoy' => Dice los eventos de hoy.
                                       - 'Semana' => Dice los eventos de lo que queda de semana (hasta el domingo, este incluído).
                                       - Resto => Dice todos los eventos.
   ## Internet
   - Reproduce => Reproduce un video en YouTube.
-  - Busca =>    - 'Google' => Busca en Google.
-                - 'Wikipedia' => Busca en Wikipedia.
-                - 'Amazon' => Busca en Amazon.
+  - Busca =>    
+          - 'Google' => Busca en Google.
+          - 'Wikipedia' => Busca en Wikipedia.
+          - 'Amazon' => Busca en Amazon.
   ## Abrir
   - Abre =>   - 'YouTube' => Abre Youtube.
               - 'Calculadora' => Abre la calculadora.
