@@ -28,8 +28,8 @@ def obtenerCiudadClima(texto: str, cuando : str) -> str:
     Obtiene la ciudad del texto para ver el clima, pone la primera letra en mayúsculas y la retorna.
     """
     traductor = Translator()
-    ciudad = texto.replace('dime el clima de ', '').replace('dime el clima en ', '').replace('dime el clima de ' , '')
-    ciudad = texto.replace('dime el tiempo de ', '').replace('dime el tiempo en ', '').replace('dime el tiempo de ' , '')
+    ciudad = texto.replace('dime el clima de ', '').replace('dime el clima en ', '')
+    ciudad = texto.replace('dime el tiempo de ', '').replace('dime el tiempo en ', '')
     ciudad = ciudad.replace(' de ', '').replace(' en ', '')
     ciudad = ciudad.replace(cuando, '')
     if ciudad == "":

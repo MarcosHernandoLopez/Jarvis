@@ -5,9 +5,26 @@ from clima import *
 from fechas import *
 import socket, os, webbrowser,pyttsx3, speech_recognition as sr, pywhatkit, wikipedia, random, json
 
+# Configuración
+def config() -> dict:
+    """
+    Lee el fichero JSON y guarda su contenido en un diccionario que será retornado.
+    """
+    f = open('config.json')
+    data = json.load(f)
+    f.close()
+    return data
+
+wikipedia.set_lang('es')
+engine = pyttsx3.init()
+voices = engine.getProperty('voices')
+volumen = engine.getProperty('volume')
+engine.setProperty('voice', voices[2].id)
+engine.setProperty('rate', 160)
+data = config()
+nombre = "jarvis"
 
 # Métodos
-
 def talk(texto : str):
     """
     Dice el mensaje pasado como parámetro.
@@ -72,15 +89,6 @@ def eliminarNotasWikipedia(texto : str) -> str:
 
     sinNotas = sinNotas.replace(']', '')
     return sinNotas
-
-def config() -> dict:
-    """
-    Lee el fichero JSON y guarda su contenido en un diccionario que será retornado.
-    """
-    f = open('config.json')
-    data = json.load(f)
-    f.close()
-    return data
 
 def eliminarTildes(texto : str) -> str:
     """
@@ -181,9 +189,7 @@ def obtenerFinal() -> str | None:
     print('fFinal: ' + str(fFinal))
     return fFinal
 
-
-
-def run():
+def main():
     """
     Llama al método 'escucha()' y dependiendo de los valores retornados ejecuta un comando de voz (ninguno si estado == False o si no se tiene ese comando).
     """
@@ -281,44 +287,55 @@ def run():
                             talk('No entendí la fecha de fin del evento.')
                         else:
                             talk(crearEvento(titulo, desc, inicio, final))
+                    # Dice tus eventos 
                     elif 'cuales' in rec or 'dime' in rec or 'que eventos' in rec:
                         # Eventos de hoy
                         if 'hoy' in rec:
-                            talk('Estos son tus eventos de hoy:')
                             eventosHoy = obtenerEventos()[0]
-                            for evento in eventosHoy:
-                                titulo = evento['summary']
-                                fInicio = extraerFechaEvento(evento)[0]
-                                fFinal = extraerFechaEvento(evento)[1]
-                                inicio = extraerTiemposEvento(evento)[0]
-                                final = extraerTiemposEvento(evento)[1]
+                            if len(eventosHoy) == 0:
+                                talk('No tienes ningún evento hoy.')
+                            else: 
+                                talk('Estos son tus eventos de hoy:')
+                                for evento in eventosHoy:
+                                    titulo = evento['summary']
+                                    fInicio = extraerFechaEvento(evento)[0]
+                                    fFinal = extraerFechaEvento(evento)[1]
+                                    inicio = extraerTiemposEvento(evento)[0]
+                                    final = extraerTiemposEvento(evento)[1]
 
-                                if fInicio == fFinal:
-                                    talk(f'De {inicio} a {final}: {titulo}')
-                                else:
-                                    talk(f'De {inicio} a las {final} del {fFinal}: {titulo}')
+                                    if fInicio == fFinal:
+                                        talk(f'De {inicio} a {final}: {titulo}')
+                                    else:
+                                        talk(f'De {inicio} a las {final} del {fFinal}: {titulo}')
                         # Eventos de esta semana
                         elif 'semana' in rec:
-                            talk('Estos son tus eventos de lo que queda de semana:')
                             eventosEstaSemana = obtenerEventos()[1]
-                            for evento in eventosEstaSemana:
-                                titulo = evento['summary']
-                                fInicio = extraerFechaEvento(evento)[0]
-                                fFinal = extraerFechaEvento(evento)[1]
-                                inicio = extraerTiemposEvento(evento)[0]
-                                final = extraerTiemposEvento(evento)[1]
-                                talk(f'De {inicio} del {fInicio} a las {final} del {fFinal}: {titulo}')
+                            if len(eventosEstaSemana) == 0:
+                                talk('No tienes ningún evento en lo que queda de semana.')
+                            else:
+                                talk('Estos son tus eventos de lo que queda de semana:')
+                                for evento in eventosEstaSemana:
+                                    titulo = evento['summary']
+                                    fInicio = extraerFechaEvento(evento)[0]
+                                    fFinal = extraerFechaEvento(evento)[1]
+                                    inicio = extraerTiemposEvento(evento)[0]
+                                    final = extraerTiemposEvento(evento)[1]
+                                    talk(f'De {inicio} del {fInicio} a las {final} del {fFinal}: {titulo}')
                         # Todos los eventos
                         else:
-                            talk('Estos son todos tus eventos:')
                             eventosTodos = obtenerEventos()[2]
-                            for evento in eventosTodos:
-                                titulo = evento['summary']
-                                fInicio = extraerFechaEvento(evento)[0]
-                                fFinal = extraerFechaEvento(evento)[1]
-                                inicio = extraerTiemposEvento(evento)[0]
-                                final = extraerTiemposEvento(evento)[1]
-                                talk(f'De {inicio} del {fInicio} a las {final} del {fFinal}: {titulo}')
+
+                            if len(eventosTodos) == 0:
+                                talk('No tienes ningún evento.')
+                            else:
+                                talk('Estos son todos tus eventos:')
+                                for evento in eventosTodos:
+                                    titulo = evento['summary']
+                                    fInicio = extraerFechaEvento(evento)[0]
+                                    fFinal = extraerFechaEvento(evento)[1]
+                                    inicio = extraerTiemposEvento(evento)[0]
+                                    final = extraerTiemposEvento(evento)[1]
+                                    talk(f'De {inicio} del {fInicio} a las {final} del {fFinal}: {titulo}')
                     # Elimina un evento según su título
                     elif 'borra' in rec or 'elimina' in rec:
                         eventos = obtenerEventos()[2]
@@ -419,20 +436,8 @@ def run():
                 print('Error: ' + str(ex))
 
 
-# Configuración
-
-wikipedia.set_lang('es')
-engine = pyttsx3.init()
-voices = engine.getProperty('voices')
-volumen = engine.getProperty('volume')
-engine.setProperty('voice', voices[2].id)
-engine.setProperty('rate', 160)
-data = config()
-nombre = "jarvis"
-
-
 if __name__ == "__main__":
     talk("Hola "+ data["master"] +", soy Yarvis.")
     # Mientras no se apague el asistente seguirá ejecutándose siempre.
     while True:
-        run()
+        main()

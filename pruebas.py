@@ -1,4 +1,7 @@
 
+
+
+#PARA EL MAPA
 texto = "cual es la distancia entre ciudad de buenos aires y entrepinos"
 texto2 = "cuanto tiempo se tarda de ir desde ciudad de buenos aires a entrepinos"
 
