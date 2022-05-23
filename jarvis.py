@@ -3,6 +3,7 @@ from googlesearch import search
 from calendario import *
 from clima import *
 from fechas import *
+from conversorDivisas import *
 import socket, os, webbrowser,pyttsx3, speech_recognition as sr, pywhatkit, wikipedia, random, json
 
 # Configuración
@@ -122,7 +123,6 @@ def obtenerTitulo() -> str:
     """
     talk('Dime el título del evento')
     titulo = listen()
-    print(titulo)
     return titulo
 
 def obtenerDesc() -> str:
@@ -276,6 +276,11 @@ def main():
                     talk('Iniciando el control remoto')
                     pywhatkit.start_server()
                 
+                # Hace una conversión de divisas
+                elif 'cuanto son' in rec or 'cuanto equivale' in rec:
+                    talk('Esta es la conversión: ')
+                    talk(obtenerConversion(rec))
+
                 # Trabajo sobre Google Calendar
                 elif 'evento' in rec:
                     # Nuevo evento
@@ -345,7 +350,7 @@ def main():
                         if evento is None:
                             talk('No se ha encontrado ningún evento con título ' + titulo)
                         else:
-                            talk(f'¿Eliminar el evento {evento["summary"]}? Diga sí para confirmar')
+                            talk(f'¿Seguro que quiere eliminar el evento {evento["summary"]}? Diga sí para confirmar')
                             confirmar = listen().replace('í', 'i').replace('ì', 'i')
 
                             if confirmar == 'si':
@@ -430,7 +435,7 @@ def main():
                     os.system("shutdown /s /t 1")
 
                 else: 
-                    talk('Lo siento, no reconozco: ' + rec)
+                    talk('Lo siento, no reconozco: ' + rec + '. Prueba con "Jarvis busca en Google"')
             
             except Exception as ex:
                 print('Error: ' + str(ex))
