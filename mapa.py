@@ -2,6 +2,7 @@ import json
 import requests
 import urllib
 
+
 with open('config.json', 'r') as f:
     data = json.load(f)
 
@@ -15,10 +16,10 @@ def obtenerCiudadesMapa(texto : str) -> list:
         - Origen  [0]
         - Destino [1]
     """
-    ciudades = texto.replace('distancia ', '').replace('kilometros ', '').replace('cuantos ', '').replace('cuanto ', '').replace('entre ', '').replace('dime ', '').replace('como ', '').replace('ruta ', '').replace('camino', '')\
+    ciudades = texto.replace('distancia ', '').replace('kilometros ', '').replace('cuantos ', '').replace('cuanto ', '').replace('entre ', '').replace('dime ', '').replace('como ', '').replace('ruta ', '').replace('camino ', '')\
                         .replace('caminando ', '').replace('andando ', '').replace('a pie ', '')\
                         .replace('bici ', '').replace('bicicleta ', '').replace('pedaleando ', '')\
-                        .replace('en coche', '').replace('conduciendo ', '')\
+                        .replace('en coche ', '').replace('conduciendo ', '')\
                         .replace('mas corta ', '').replace('mas corto ', '').replace('mas rapida ', '').replace('mas rapido ', '')\
                         .replace('cual ', '').replace('hay ', '').replace('para ', '').replace('que ', '').replace('desde ', '').replace('es la ', '').replace(' y ', '@').replace(' a ', '@').replace(' e ', '@')\
                         .replace('tiempo ', '').replace('se ', '').replace('tarda ', '').replace('de ', '').replace('es el ', '')\
@@ -71,7 +72,12 @@ def obtenerDatosMapa(ciudades : list, tipoRuta : str) -> str:
     elif status_code == 0:
         distancia = round(data['route']['distance'], 2)
         tiempoTemp = data['route']['formattedTime'].split(':')
-        tiempo = tiempoTemp[0] + " horas y " + tiempoTemp[1] + " minutos"
+
+        if int(tiempoTemp[0]) == 0:
+            tiempo = tiempoTemp[1] + " minutos"
+        else:
+            tiempo = tiempoTemp[0] + " horas y " + tiempoTemp[1] + " minutos"
+
         if tipoRuta == 'fastest':
             return f'Para ir de {origen} a {destino} en coche hay que recorrer una distancia de {distancia} kilómetros y se tarda {tiempo}.'
         elif tipoRuta == 'shortest':
@@ -80,12 +86,3 @@ def obtenerDatosMapa(ciudades : list, tipoRuta : str) -> str:
             return f'Para ir de {origen} a {destino} andando hay que recorrer una distancia de {distancia} kilómetros y se tarda {tiempo}.'
         else:
             return f'Para ir de {origen} a {destino} en bicicleta hay que recorrer una distancia de {distancia} kilómetros y se tarda {tiempo}.'
-
-texto = 'de fuenlabrada a madrid'
-
-ciudades = obtenerCiudadesMapa(texto)
-ruta = obtenerTipoRuta('conduciendo')
-
-a = obtenerDatosMapa(ciudades, ruta)
-
-print(a)

@@ -14,7 +14,7 @@ def obtenerServicioCalendario():
     Si no, abre el navegador para que este haga el proceso de autorización y crea el fichero para almacenar estas. 
     """
     creds = None
-    # El archivo token.pickle guarda los datos de acceso del usuario y refresca los tokens. Se crea automáticamente cuando termina la autenticación.
+    # El archivo token.json guarda los datos de acceso del usuario y refresca el token. Se crea automáticamente cuando termina la autenticación.
     # Solo ocurre la primera vez, no vuelve a pasar después de autenticarse.
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)

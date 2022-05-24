@@ -4,6 +4,7 @@ from calendario import *
 from clima import *
 from fechas import *
 from conversorDivisas import *
+from mapa import *
 import socket, os, webbrowser,pyttsx3, speech_recognition as sr, pywhatkit, wikipedia, random, json
 
 # Configuración
@@ -276,11 +277,6 @@ def main():
                     talk('Iniciando el control remoto')
                     pywhatkit.start_server()
                 
-                # Hace una conversión de divisas
-                elif 'cuanto son' in rec or 'cuanto equivale' in rec:
-                    talk('Esta es la conversión: ')
-                    talk(obtenerConversion(rec))
-
                 # Trabajo sobre Google Calendar
                 elif 'evento' in rec:
                     # Nuevo evento
@@ -392,6 +388,16 @@ def main():
 
                     else:
                         talk('Lo siento, sólo tengo los datos de hoy, mañana y pasado.')
+
+                # Dice la distancia y el tiempo que se recorre para ir de un punto X a un punto Y en una ruta Z
+                if 'distancia' in rec or 'ruta' in rec or 'ir' in rec:
+                    ciudades, tipoRuta = obtenerCiudadesMapa(rec), obtenerTipoRuta(rec)
+                    talk(obtenerDatosMapa(ciudades, tipoRuta))
+
+                # Hace una conversión de divisas
+                elif 'cuanto son' in rec or 'cuanto equivale' in rec:
+                    talk('Esta es la conversión: ')
+                    talk(obtenerConversion(rec))
 
                 #Lanza una moneda
                 elif 'lanza una moneda' in rec:
