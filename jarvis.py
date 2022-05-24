@@ -45,7 +45,7 @@ def listen() -> str:
         print("Escuchando...")
         listener.adjust_for_ambient_noise(source, duration=1)
         listener.pause_threshold = 0.8
-        audio = listener.listen(source, timeout=5)
+        audio = listener.listen(source)
         rec = ""
         try:
             rec = listener.recognize_google(audio, language='es-ES').lower()
@@ -437,6 +437,7 @@ def main():
                 else: 
                     talk('Lo siento, no reconozco: ' + rec + '. Prueba con "Jarvis busca en Google"')
             
+# TRABAJO DE ERRORES
             except Exception as ex:
                 print('Error: ' + str(ex))
 
