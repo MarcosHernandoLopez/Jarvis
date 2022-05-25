@@ -8,29 +8,6 @@
   - Lanza una moneda => Lanza una moneda y devuelve cara o cruz.
   ## Google Calendar
     > Esta sección necesita de la palabra 'Evento' para funcionar
-  - Crea / Nuevo / Añade => Crea un nuevo evento en el calendario.
-  - Cuáles / Dime / Qué eventos =>    - 'Hoy' => Dice los eventos de hoy.
-                                      - 'Semana' => Dice los eventos de lo que queda de semana (hasta el domingo, este incluído).
-                                      - Resto => Dice todos los eventos.
-  ## Internet
-  - Reproduce => Reproduce un video en YouTube.
-  - Busca =>    - 'Google' => Busca en Google.
-                - 'Wikipedia' => Busca en Wikipedia.
-                - 'Amazon' => Busca en Amazon.
-  ## Abrir
-  - Abre =>   - 'YouTube' => Abre Youtube.
-              - 'Calculadora' => Abre la calculadora.
-              - 'Explorador de archivos / ficheros' => Abre el explorador de archivos.
-  ## Hora# Jarvis es una asistente virtual programado en python
-*Todos los comandos requieren que primero se nombre al asistente*
-  ## Miscelanía
-  - Cuéntame un chiste:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cuenta un chiste aleatorio elegido de una lista.
-  - Cómo estás:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dice una frase elegida aleatoriamente.
-  - Llámame:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cambia el nombre con el que te llamará el asistente.
-  - Cuál es mi nombre:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dice el nombre con el que te llamará el asistente.
-  - Lanza una moneda:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lanza una moneda y devuelve cara o cruz.
-  ## Google Calendar
-    > Esta sección necesita de la palabra 'Evento' para funcionar
   - Crea / Nuevo / Añade: Crea un nuevo evento en el calendario.
   - Cuáles / Dime / Qué eventos:      
                                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Hoy' => Dice los eventos de hoy.  
@@ -56,10 +33,10 @@
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Pasado mañana' => Dice el clima de pasado mañana en la ciudad dicha.  
   ## Fechas
   - Que día / Cuándo es:  
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Un día de la semana => Dice cuándo es el próximo día de la semana dicho (lunes, martes...).
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Dentro de' / 'Será' => Dice qué día será dentro de X días dichos, mañana o pasado mañana.
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Era' / 'Fue' => Dice qué día fue hace X días dechos, ayer o anteayer.
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Es' => Dice qué día es hoy.
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Un día de la semana => Dice cuándo es el próximo día de la semana dicho (lunes, martes...).   
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Dentro de' / 'Será' => Dice qué día será dentro de X días dichos, mañana o pasado mañana.   
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Era' / 'Fue' => Dice qué día fue hace X días dechos, ayer o anteayer.   
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Es' => Dice qué día es hoy.   
   ## Herramientas
   - Captura de pantalla:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hace una captura de pantalla.
   - Control remoto:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Activa el servidor para poder controlar el teclado y ratón con el teléfono.Para esto ir al navegador y escribir tu ip seguido de :8000
@@ -68,18 +45,5 @@
   - Reinicia el ordenador:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reinicia el ordenador.
   - Suspende el ordenador:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Suspende el ordenador.
   - Apaga el ordenador:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Apaga el ordenador.
-  - Qué hora es => Dice la hora actual.
-  ## Clima
-  - Clima =>  - 'Hoy' => Dice el clima de hoy en la ciudad dicha.
-              - 'Mañana' => Dice el clima de mañana en la ciudad dicha.
-              - 'Pasado mañana' => Dice el clima de pasado mañana en la ciudad dicha.
-  ## Fechas
-
-  ## Herramientas
-  - Captura de pantalla => Hace una captura de pantalla.
-  - Control remoto => Activa el servidor para poder controlar el teclado y ratón con el teléfono. Para esto ir al navegador y escribir tu ip seguido de :8000
-  ## Alimentación
-  - Cierra sesión => Cierra la sesión.
-  - Reinicia el ordenador => Reinicia el ordenador.
-  - Suspende el ordenador => Suspende el ordenador.
-  - Apaga el ordenador => Apaga el ordenador.
+  - Qué hora es => Dice la hora actual.  
+ 
