@@ -5,6 +5,7 @@ from clima import *
 from fechas import *
 from conversorDivisas import *
 from mapa import *
+from matematicas import *
 import socket, os, webbrowser,pyttsx3, speech_recognition as sr, pywhatkit, wikipedia, random, json
 
 # Configuración
@@ -41,19 +42,20 @@ def listen() -> str:
     Escucha el audio y retorna el texto de este.
     """
 
-    listener = sr.Recognizer()
-    with sr.Microphone() as source:
-        print("Escuchando...")
-        listener.adjust_for_ambient_noise(source, duration=1)
-        listener.pause_threshold = 0.8
-        audio = listener.listen(source)
-        rec = ""
-        try:
+    try:
+        listener = sr.Recognizer()
+        with sr.Microphone() as source:
+            print("Escuchando...")
+            listener.adjust_for_ambient_noise(source, duration=1)
+            listener.pause_threshold = 0.8
+            audio = listener.listen(source)
+            rec = ""
             rec = listener.recognize_google(audio, language='es-ES').lower()
-        except sr.UnknownValueError:
-            pass
-        except sr.RequestError as e:
-            print(f'No se pudo obtener respuesta del servicio de Google Speech Recognition: {e}')
+    except sr.UnknownValueError:
+        talk(f'No pude entender lo que dijiste')
+    except sr.RequestError as ex:
+        print('Error: ' + ex)
+        talk(f'No obtuve respuesta del servicio de Google Speech Recognition')
 
     return rec.lower()
 
@@ -254,6 +256,11 @@ def main():
                     nombre = data['master']
                     talk("Tu nombre es " + nombre)
 
+                # Realiza un cálculo matemático
+                elif 'calcula' in rec or 'cuanto es' in rec:
+                    operacion = obtenerOperacion(rec)
+                    talk(calcularOperacion(operacion))
+
                 #Abre YouTube, la calculadora, el explorador de ficheros
                 elif 'abre' in rec:
                     if 'youtube' in rec:
@@ -390,7 +397,7 @@ def main():
                         talk('Lo siento, sólo tengo los datos de hoy, mañana y pasado.')
 
                 # Dice la distancia y el tiempo que se recorre para ir de un punto X a un punto Y en una ruta Z
-                if 'distancia' in rec or 'ruta' in rec or 'ir' in rec:
+                elif 'distancia' in rec or 'ruta' in rec or 'ir' in rec:
                     ciudades, tipoRuta = obtenerCiudadesMapa(rec), obtenerTipoRuta(rec)
                     talk(obtenerDatosMapa(ciudades, tipoRuta))
 

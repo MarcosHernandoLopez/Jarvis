@@ -61,7 +61,7 @@ def obtenerEventos() -> list | None:
 
 def eliminarEvento(idEvento : str) -> str:
     """
-    Comprueba que en la lista de eventos pasada haya alguno con el título pasado como parámetro y si es así borra a este.
+    Borra el evento cuyo ID coincide con el pasado como parámetro.
     """
     try:
         service.events().delete(calendarId = 'primary', eventId = idEvento).execute()
@@ -72,6 +72,9 @@ def eliminarEvento(idEvento : str) -> str:
         return 'Hubo un problema al eliminar el evento.'
 
 def eventoExiste(listaEventos : list, tituloEvento : str) -> str:
+    """
+    Comprueba que en la lista de eventos pasada haya alguno con el título pasado como parámetro
+    """
     for evento in listaEventos:
         if evento['summary'].lower() == tituloEvento.lower():
             return evento
