@@ -47,7 +47,3 @@
   - Apaga el ordenador:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Apaga el ordenador.
 <<<<<<< HEAD
   - Qué hora es => Dice la hora actual.  
-=======
-  - Qué hora es => Dice la hora actual.  
- 
->>>>>>> ffffa23b17220ca296e8276405977a254ca8d462
