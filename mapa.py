@@ -1,6 +1,4 @@
-import json
-import requests
-import urllib
+import json,requests,urllib
 
 
 with open('config.json', 'r') as f:

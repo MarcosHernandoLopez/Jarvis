@@ -1,4 +1,4 @@
-from datetime import date, timedelta, datetime
+from datetime import date, timedelta
 import locale
 
 locale.setlocale(locale.LC_ALL, 'es_ES')

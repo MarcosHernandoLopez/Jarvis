@@ -1,5 +1,4 @@
 from math import *
-from turtle import st
 
 def obtenerOperacion(operacion : str) -> str:
     """
@@ -40,7 +39,7 @@ def calcularOperacion(operacion : str) -> str:
 
             return f'El resultado de la operación es {resStr}.'
         except ZeroDivisionError as zde:
-            print('Error: ' + st(zde))
+            print('Error: ' + str(zde))
             return 'No se puede dividir entre 0'
         except Exception as ex:
             print('Error: ' + str(ex))

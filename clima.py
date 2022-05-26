@@ -1,5 +1,4 @@
-import json, requests
-import geocoder
+import json, requests, geocoder
 from googletrans import Translator
 from fechas import *
 
