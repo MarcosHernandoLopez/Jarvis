@@ -63,17 +63,17 @@ def comando() -> list:
     """
     Crea la escucha de los comandos de voz. Retorna el comando y si se ha dicho la palabra de activación.
     """
-    estado = False
+    clave = False
     rec = listen()
     try:
         rec = rec.replace('yarbiss', 'jarvis').replace('yarbis', 'jarvis')
         if nombre in rec:
             rec = rec.replace(nombre, "")
             rec = eliminarTildes(rec).strip()
-            estado = True
+            clave = True
     except:
         pass
-    return rec, estado
+    return rec, clave
 
 def eliminarNotasWikipedia(texto : str) -> str:
     """
@@ -194,15 +194,15 @@ def obtenerFinal() -> str | None:
 
 def main():
     """
-    Llama al método 'escucha()' y dependiendo de los valores retornados ejecuta un comando de voz (ninguno si estado == False o si no se tiene ese comando).
+    Llama al método 'escucha()' y dependiendo de los valores retornados ejecuta un comando de voz (ninguno si clave == False o si no se tiene ese comando).
     """
     valores = comando()
     rec = valores[0]
-    estado = valores[1]
+    clave = valores[1]
     print("-----------------DEBUG-----------------")
-    print("Comando: " + rec + "     Palabra clave: " + str(estado))
+    print("Comando: " + rec + "     Palabra clave: " + str(clave))
     print("---------------------------------------")
-    if estado:
+    if clave:
             try:
                 # Cuenta un chiste de la lista
                 if "cuentame un chiste" in rec:
