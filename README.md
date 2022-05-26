@@ -1,5 +1,6 @@
 # Jarvis es una asistente virtual programado en python
 *Todos los comandos requieren que primero se nombre al asistente*
+*El asistente se desconecta diciendo 'Jarvis descansa'*
   ## Miscelanía
   - Cuéntame un chiste => Cuenta un chiste aleatorio elegido de una lista.
   - Cómo estás => Dice una frase elegida aleatoriamente.
@@ -12,7 +13,8 @@
   - Cuáles / Dime / Qué eventos:      
                                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Hoy' => Dice los eventos de hoy.  
                                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Semana' => Dice los eventos de lo que queda de semana (hasta el domingo, este incluído).  
-                                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Resto => Dice todos los eventos.  
+                                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Resto => Dice todos los eventos.
+  - Borra / Elimina: Elimina un evento del calendario
   ## Internet
   - Reproduce:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Reproduce un video en YouTube.
   - Busca:      
@@ -38,12 +40,13 @@
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Era' / 'Fue' => Dice qué día fue hace X días dechos, ayer o anteayer.   
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Es' => Dice qué día es hoy.   
   ## Herramientas
+  - Distancia / Ruta / Ir: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dice la distancia y el tiempo que se tarda en ir de X a Y andando, conduciendo o en bicicleta.
+  - Calcula / Cuanto es: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Realiza una operación matemática. Las raíces solo pueden ser cuadradas y se tiene que decir después.
+  - Cuanto son / Cuanto equivale:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hace una conversión de divisas entre 2 nombradas.
   - Captura de pantalla:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hace una captura de pantalla.
   - Control remoto:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Activa el servidor para poder controlar el teclado y ratón con el teléfono.Para esto ir al navegador y escribir tu ip seguido de :8000
   ## Alimentación
   - Cierra sesión:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cierra la sesión.
   - Reinicia el ordenador:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reinicia el ordenador.
   - Suspende el ordenador:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Suspende el ordenador.
-  - Apaga el ordenador:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Apaga el ordenador.
-<<<<<<< HEAD
-  - Qué hora es => Dice la hora actual.  
+  - Apaga el ordenador:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Apaga el ordenador. 
