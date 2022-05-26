@@ -446,7 +446,7 @@ def main():
                 elif 'apaga el ordenador' in rec:
                     talk('Apagando en 3... 2... 1...')
                     os.system("shutdown /s /t 1")
-
+    # ELSE
                 else: 
                     talk('Lo siento, no reconozco: ' + rec + '. Prueba con "Jarvis busca en Google"')
             
