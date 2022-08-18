@@ -1,0 +1,13 @@
+1. config.json
+        {
+    "master": "Nombre",
+    "API_map":"Api key de mapquestapi",
+    "API_weather": "Api key de openweatherapi"
+        }
+
+2. credentials.json
+        Credenciales de Google Cloud para el uso de Google Calendar.
+
+3. *OPCIONAL* token.json
+        Necesario para iniciar la sesión de Google Calendar, se crea solo si es la primera vez que se inicia.
+        Se puede transpasar para iniciar sesión directamente.

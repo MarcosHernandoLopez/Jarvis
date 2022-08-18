@@ -77,4 +77,3 @@ def obtenerClima(ciudad : str, cuando : str) -> str :
     coords = coordenadas(ciudad)
     climas = climasDe(coords[0], coords[1])
     return clima(cuando, climas)
-
