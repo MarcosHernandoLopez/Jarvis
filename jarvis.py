@@ -22,7 +22,7 @@ wikipedia.set_lang('es')
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')
 volumen = engine.getProperty('volume')
-engine.setProperty('voice', voices[2].id)
+engine.setProperty('voice', voices[0].id)
 engine.setProperty('rate', 160)
 data = config()
 nombre = "jarvis"
@@ -377,9 +377,10 @@ def main():
 
                 # El clima de hoy, mañana o pasado
                 elif 'clima' in rec or 'tiempo' in rec:
-       
+                
                     if "hoy" in rec:
                         ciudad = obtenerCiudadClima(rec, 'hoy')
+
                         talk('Este es el clima de hoy en ' + ciudad + ':')
                         talk(obtenerClima(ciudad, 'hoy'))
 

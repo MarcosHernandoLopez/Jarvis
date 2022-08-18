@@ -27,10 +27,10 @@ def obtenerCiudadClima(texto: str, cuando : str) -> str:
     Obtiene la ciudad del texto para ver el clima, pone la primera letra en mayúsculas y la retorna.
     """
     traductor = Translator()
-    ciudad = texto.replace('dime el clima de ', '').replace('dime el clima en ', '')
-    ciudad = texto.replace('dime el tiempo de ', '').replace('dime el tiempo en ', '')
-    ciudad = ciudad.replace(' de ', '').replace(' en ', '')
-    ciudad = ciudad.replace(cuando, '')
+
+    ciudad = texto.replace('dime', '').replace('clima', '').replace('tiempo', '')\
+        .replace('hara', '').replace('hace', '').replace(' de ', '')\
+        .replace(' en ', '').replace(' que ', '').replace(cuando, '').replace(' el ', '')
     if ciudad == "":
         ciudad = geocoder.ip('me').city
     ciudad = ciudad.title()
@@ -38,7 +38,6 @@ def obtenerCiudadClima(texto: str, cuando : str) -> str:
 
     if ciudadEs == 'Puerto':
         ciudadEs = 'O Porto'
-
     return ciudadEs
 
 def climasDe(lat : float, lon : float) -> dict:
